@@ -9,8 +9,8 @@
 namespace CAO\TvSeriesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
 /**
  * UserEpisode
  *
@@ -18,24 +18,23 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @package TvSeriesBundle\Entity
  *
- * @ORM\Entity
- *
+ * @ORM\Entity()
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var string
      * @ORM\Id()
-     * @ORM\Column(type="guid", nullable=false )
+     * @ORM\Column(type="guid", nullable=false)
      * @ORM\GeneratedValue(strategy="UUID")
      */
     private $id;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
-    private $name;
+    private $username;
 
     /**
      * @var Assert\Email
@@ -45,7 +44,16 @@ class User
      */
     private $email;
 
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
 
+    /**
+     *
+     * @ORM\Column(type="string", length=64)
+     */
     private $password;
 
     /**
@@ -69,15 +77,15 @@ class User
      */
     public function getName()
     {
-        return $this->name;
+        return $this->username;
     }
 
     /**
-     * @param string $name
+     * @param string $username
      */
-    public function setName($name)
+    public function setName($username)
     {
-        $this->name = $name;
+        $this->username = $username;
     }
 
     /**
@@ -111,5 +119,48 @@ class User
     {
         $this->password = $password;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function getRoles() { return array('ROLE_USER'); }
 
 }
