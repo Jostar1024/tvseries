@@ -1,0 +1,5 @@
+cao_tv_series:
+    resource: "@CAOTvSeriesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

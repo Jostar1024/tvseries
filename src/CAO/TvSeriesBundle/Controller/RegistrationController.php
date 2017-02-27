@@ -45,4 +45,15 @@ class RegistrationController extends Controller
     {
         return $this->render('@CAOTvSeries/Registration/success.html.twig');
     }
+
+    /**
+     * @Route("/logout", name="user_logout")
+     */
+    public function logoutAction()
+    {
+        //clear the token, cancel session and redirect
+        $this->get('security.context')->setToken(null);
+        $this->get('request')->getSession()->invalidate();
+        return $this->redirectToRoute("tvseries_index");
+    }
 }

@@ -18,7 +18,7 @@ class TvSeriesController extends Controller
     /**
      * Lists all tvSeries entities.
      *
-     * @Route("/", name="admin_tvseries_index")
+     * @Route("/", name="tvseries_index")
      * @Method("GET")
      */
     public function indexAction()

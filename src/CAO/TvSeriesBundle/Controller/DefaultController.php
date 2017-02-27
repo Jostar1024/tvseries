@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/CAO")
+     * @Route("/")
      */
     public function indexAction()
     {
