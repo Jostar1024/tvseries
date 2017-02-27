@@ -5,10 +5,12 @@
 
     <table>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ episode.id }}</td>
-            </tr>
+            {% if is_granted('ROLE_ADMIN') %}
+                <tr>
+                    <th>Id</th>
+                    <td>{{ episode.id }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <th>Name</th>
                 <td>{{ episode.name }}</td>
@@ -36,13 +38,15 @@
         <li>
             <a href="{{ path('admin_episode_index') }}">Back to the list</a>
         </li>
-        <li>
-            <a href="{{ path('admin_episode_edit', { 'id': episode.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li>
+                <a href="{{ path('admin_episode_edit', { 'id': episode.id }) }}">Edit</a>
+            </li>
+            <li>
+                {{ form_start(delete_form) }}
+                    <input type="submit" value="Delete">
+                {{ form_end(delete_form) }}
+            </li>
+        {% endif %}
     </ul>
 {% endblock %}

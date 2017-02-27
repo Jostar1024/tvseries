@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: caoych
- * Date: 2017/2/25
- * Time: 12:51
- */
 
 namespace CAO\TvSeriesBundle\Form;
 
-
-use CAO\TvSeriesBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -22,8 +14,11 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 
 class UserType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    {;
         $builder
             ->add('email', EmailType::class)
             ->add('username', TextType::class)
@@ -38,9 +33,24 @@ class UserType extends AbstractType
             ))
         ;
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class' => User::class));
+        $resolver->setDefaults(array(
+            'data_class' => 'CAO\TvSeriesBundle\Entity\User'
+        ));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'cao_tvseriesbundle_user';
+    }
+
+
 }

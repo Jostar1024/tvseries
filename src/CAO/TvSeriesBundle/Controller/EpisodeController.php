@@ -3,6 +3,7 @@
 namespace CAO\TvSeriesBundle\Controller;
 
 use CAO\TvSeriesBundle\Entity\Episode;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Episode controller.
  *
- * @Route("admin/episode")
+ * @Route("/episode")
  */
 class EpisodeController extends Controller
 {
@@ -36,6 +37,7 @@ class EpisodeController extends Controller
      *
      * @Route("/new", name="admin_episode_new")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
@@ -91,6 +93,7 @@ class EpisodeController extends Controller
      *
      * @Route("/{id}/edit", name="admin_episode_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, Episode $episode)
     {
@@ -116,6 +119,7 @@ class EpisodeController extends Controller
      *
      * @Route("/{id}", name="admin_episode_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, Episode $episode)
     {

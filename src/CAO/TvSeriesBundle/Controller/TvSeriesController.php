@@ -3,6 +3,7 @@
 namespace CAO\TvSeriesBundle\Controller;
 
 use CAO\TvSeriesBundle\Entity\TvSeries;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * Tvseries controller.
  *
- * @Route("admin/tvseries")
+ * @Route("tvseries")
  */
 class TvSeriesController extends Controller
 {
@@ -36,9 +37,11 @@ class TvSeriesController extends Controller
      *
      * @Route("/new", name="admin_tvseries_new")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function newAction(Request $request)
     {
+
         $tvSeries = new Tvseries();
         $form = $this->createForm('CAO\TvSeriesBundle\Form\TvSeriesType', $tvSeries);
         $form->handleRequest($request);
@@ -90,6 +93,7 @@ class TvSeriesController extends Controller
      *
      * @Route("/{id}/edit", name="admin_tvseries_edit")
      * @Method({"GET", "POST"})
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function editAction(Request $request, TvSeries $tvSeries)
     {
@@ -115,6 +119,7 @@ class TvSeriesController extends Controller
      *
      * @Route("/{id}", name="admin_tvseries_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Request $request, TvSeries $tvSeries)
     {

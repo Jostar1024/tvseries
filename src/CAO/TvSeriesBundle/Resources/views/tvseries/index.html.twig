@@ -6,7 +6,9 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Id</th>
+                {% endif %}
                 <th>Name</th>
                 <th>Author</th>
                 <th>Releaseat</th>
@@ -18,7 +20,9 @@
         <tbody>
         {% for tvSeries in tvSeries %}
             <tr>
-                <td><a href="{{ path('admin_tvseries_show', { 'id': tvSeries.id }) }}">{{ tvSeries.id }}</a></td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <td><a href="{{ path('admin_tvseries_show', { 'id': tvSeries.id }) }}">{{ tvSeries.id }}</a></td>
+                {% endif %}
                 <td>{{ tvSeries.name }}</td>
                 <td>{{ tvSeries.author }}</td>
                 <td>{% if tvSeries.releaseAt %}{{ tvSeries.releaseAt|date('Y-m-d H:i:s') }}{% endif %}</td>
@@ -29,9 +33,11 @@
                         <li>
                             <a href="{{ path('admin_tvseries_show', { 'id': tvSeries.id }) }}">show</a>
                         </li>
-                        <li>
-                            <a href="{{ path('admin_tvseries_edit', { 'id': tvSeries.id }) }}">edit</a>
-                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li>
+                                <a href="{{ path('admin_tvseries_edit', { 'id': tvSeries.id }) }}">edit</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </td>
             </tr>
@@ -39,9 +45,11 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_tvseries_new') }}">Create a new tvSeries</a>
-        </li>
-    </ul>
+    {% if is_granted('ROLE_ADMIN') %}
+        <ul>
+            <li>
+                <a href="{{ path('admin_tvseries_new') }}">Create a new tvSeries</a>
+            </li>
+        </ul>
+    {% endif %}
 {% endblock %}
