@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tvseries list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Releaseat</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tvSeries in tvSeries %}
+            <tr>
+                <td><a href="{{ path('admin_tvseries_show', { 'id': tvSeries.id }) }}">{{ tvSeries.id }}</a></td>
+                <td>{{ tvSeries.name }}</td>
+                <td>{{ tvSeries.author }}</td>
+                <td>{% if tvSeries.releaseAt %}{{ tvSeries.releaseAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ tvSeries.description }}</td>
+                <td>{{ tvSeries.image }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_tvseries_show', { 'id': tvSeries.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_tvseries_edit', { 'id': tvSeries.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_tvseries_new') }}">Create a new tvSeries</a>
+        </li>
+    </ul>
+{% endblock %}

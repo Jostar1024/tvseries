@@ -54,8 +54,8 @@ class Episode
 
     /**
      * @var string
-     * @ORM\Column(type="string")
-     *
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\File(mimeTypes={"image/*"})
      */
     private $image;
 

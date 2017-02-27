@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Episodes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Episodenumber</th>
+                <th>Datepublished</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for episode in episodes %}
+            <tr>
+                <td><a href="{{ path('admin_episode_show', { 'id': episode.id }) }}">{{ episode.id }}</a></td>
+                <td>{{ episode.name }}</td>
+                <td>{{ episode.episodeNumber }}</td>
+                <td>{% if episode.datePublished %}{{ episode.datePublished|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ episode.description }}</td>
+                <td>{{ episode.image }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_episode_show', { 'id': episode.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_episode_edit', { 'id': episode.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_episode_new') }}">Create a new episode</a>
+        </li>
+    </ul>
+{% endblock %}
