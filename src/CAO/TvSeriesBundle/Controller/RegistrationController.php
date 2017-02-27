@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegistrationController extends Controller
 {
     /**
-     * @Route("/register", name="registration")
+     * @Route("/register", name="Registration")
      */
     public function registrationAction(Request $request)
     {
@@ -33,7 +33,7 @@ class RegistrationController extends Controller
             return $this->redirectToRoute('registration_success');
         }
         return $this->render(
-            '@CAOTvSeries/registration/register.html.twig',
+            '@CAOTvSeries/Registration/register.html.twig',
             array('form' => $form->createView())
         );
     }
@@ -43,6 +43,6 @@ class RegistrationController extends Controller
      */
     public function successAction()
     {
-        return $this->render('@CAOTvSeries/registration/success.html.twig');
+        return $this->render('@CAOTvSeries/Registration/success.html.twig');
     }
 }

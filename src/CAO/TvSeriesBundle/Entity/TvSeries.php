@@ -58,6 +58,7 @@ class TvSeries
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\File(mimeTypes={"image/*"})
      */
     private $image;
 
