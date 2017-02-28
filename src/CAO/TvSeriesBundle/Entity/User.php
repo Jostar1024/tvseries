@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity()
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @var string
@@ -163,4 +163,23 @@ class User implements UserInterface
 
     public function getRoles() { return array('ROLE_USER'); }
 
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            ) = unserialize($serialized);
+    }
 }

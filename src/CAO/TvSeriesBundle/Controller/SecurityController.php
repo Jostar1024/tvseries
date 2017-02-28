@@ -8,10 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RegistrationController extends Controller
+class SecurityController extends Controller
 {
     /**
-     * @Route("/register", name="Registration")
+     * @Route("/register", name="security")
      */
     public function registrationAction(Request $request)
     {
@@ -30,20 +30,30 @@ class RegistrationController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('registration_success');
+            return $this->redirectToRoute('tvseries_index');
         }
         return $this->render(
-            '@CAOTvSeries/Registration/register.html.twig',
+            '@CAOTvSeries/security/register.html.twig',
             array('form' => $form->createView())
         );
     }
-
     /**
-     * @Route("/success", name="registration_success")
+     * @Route("/login", name="user_login")
      */
-    public function successAction()
+    public function loginAction()
     {
-        return $this->render('@CAOTvSeries/Registration/success.html.twig');
+        $authenticationUtils = $this->get('security.authentication_utils');
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('CAOTvSeriesBundle:security:login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
     }
 
     /**
