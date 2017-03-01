@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th>Datepublished</th>
-                <td>{% if episode.datePublished %}{{ episode.datePublished|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if episode.datePublished %}{{ episode.datePublished|date('Y-m-d') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Description</th>
@@ -30,6 +30,14 @@
             <tr>
                 <th>Image</th>
                 <td>{{ episode.image }}</td>
+            </tr>
+            <tr>
+                <th>You have watched this episode at</th>
+                <td>
+                    {% for ue in userEpisode %}
+                        {{ ue.watechedAt|date('Y-m-d H:i:s') }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

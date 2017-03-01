@@ -3,6 +3,7 @@
 namespace CAO\TvSeriesBundle\Controller;
 
 use CAO\TvSeriesBundle\Entity\Episode;
+use CAO\TvSeriesBundle\Entity\UserEpisode;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -81,9 +82,21 @@ class EpisodeController extends Controller
     public function showAction(Episode $episode)
     {
         $deleteForm = $this->createDeleteForm($episode);
-
+        $userEpisode = array();
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY'))
+        {
+            $userEpisode = $this->getDoctrine()
+                ->getManager()
+                ->getRepository("CAOTvSeriesBundle:UserEpisode")
+                ->findBy(array(
+                    'user' => $this->get('security.token_storage')->getToken()->getUser(),
+                    'episode' => $episode
+                ))
+            ;
+        }
         return $this->render('CAOTvSeriesBundle:episode:show.html.twig', array(
             'episode' => $episode,
+            'userEpisode' => $userEpisode,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -149,5 +162,54 @@ class EpisodeController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * @param $name
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/watch/{id}", name="user_watch_episode")
+     */
+    public function watchAction(Episode $episode)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $userEpisodeTable = $em->getRepository('CAOTvSeriesBundle:UserEpisode');
+        $episodeArr = $userEpisodeTable
+                        ->findBy(array(
+                            'user' => $user,
+                            'episode' => $episode
+                        ))
+        ;
+
+        $userEpisode = new UserEpisode();
+        $userEpisode->setUser($user);
+        $userEpisode->setEpisode($episode);
+        $userEpisode->setCurrent($episode->getEpisodeNumber());
+        $userEpisode->setWatechedAt(new \DateTime('now'));
+
+        // if null add new
+        if (empty($episodeArr))
+        {
+            $em->persist($userEpisode);
+        }
+        else // if not update this term with new data
+        {
+            $em->merge($userEpisode);
+        }
+        $em->flush();
+        return $this->redirectToRoute("admin_episode_index");
+//
+//        $form = $this->createForm('CAO\TvSeriesBundle\Form\UserEpisodeType', $userEpisode);
+//
+//        if ($form->isSubmitted() && $form->isValid())
+//        {
+//
+//        }
+//        return $this->render('', array(
+//            'user' => $user,
+//            'episode' => $episode
+//        ));
+
+
     }
 }
