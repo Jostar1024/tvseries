@@ -1,7 +1,51 @@
 {% extends '::base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset("css/main.css") }}"/>
 
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+{% endblock %}
 {% block body %}
-    <h1>Tv series Application</h1>
+    {#<h1>Tv Series Application</h1>#}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('index')}}">Tv Series Application</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ path('index')}}">Page d'Accueil</a></li>
+                    <li><a href="{{ path('tvseries_index')}}">Tv Series</a></li>
+                    <li><a href="{{ path('admin_episode_index')}}">Episode</a></li>
 
-    {% block content %}{% endblock %}
+                </ul>
+
+                {% if app.user %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li></li>
+                        <li><a href="{{ path('user_logout') }}">Logout</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ path('user_registration') }}">Registration</a></li>
+                        <li><a href="{{ path('user_login') }}">Login</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        {% block content %}{% endblock %}
+        <hr />
+        <footer>
+            <p>&copy; Mon appli de Symfony3</p>
+        </footer>
+    </div>
 {% endblock %}

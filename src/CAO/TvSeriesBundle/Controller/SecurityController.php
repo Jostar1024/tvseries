@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/register", name="security")
+     * @Route("/register", name="user_registration")
      */
     public function registrationAction(Request $request)
     {
