@@ -2,7 +2,6 @@
 
 {% block content %}
     <h1>Episodes list</h1>
-
     <table>
         <thead>
             <tr>
@@ -18,7 +17,9 @@
             </tr>
         </thead>
         <tbody>
-        {% for episode in episodes %}
+        {#{% for episode in episodes %}#}
+
+        {% for episode in paginator.iterator %}
             <tr>
                 {% if is_granted('ROLE_ADMIN') %}
                     <td><a href="{{ path('admin_episode_show', { 'id': episode.id }) }}">{{ episode.id }}</a></td>
@@ -28,6 +29,7 @@
                 <td>{% if episode.datePublished %}{{ episode.datePublished|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ episode.description }}</td>
                 <td>{{ episode.image }}</td>
+
                 <td>
                     <ul>
                         <li>
@@ -49,6 +51,32 @@
         {% endfor %}
         </tbody>
     </table>
+    <div>
+        <ul class="pagination">
+            <li>
+                <a href="{{ path('episode_with_paginator') }}">&laquo;</a>
+            </li>
+            {% if currentPage != 1 %}
+                <li>
+                    <a href="{{ path('episode_with_paginator', {'page': (currentPage - 1)}) }}">&lsaquo;</a>
+                </li>
+            {% endif %}
+            {% for i in 1..totalPages %}
+                <li>
+                    <a{% if  i == currentPage %} class="disabled"{% endif %} href="{{ path('episode_with_paginator', {'page': i}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+            {% if currentPage != totalPages %}
+                <li>
+                    <a href="{{ path('episode_with_paginator', {'page': (currentPage + 1)}) }}">&rsaquo;</a>
+                </li>
+            {% endif %}
+
+            <li>
+                <a href="{{ path('episode_with_paginator', {'page': totalPages}) }}">&raquo;</a>
+            </li>
+        </ul>
+    </div>
     {% if is_granted('ROLE_ADMIN') %}
         <ul>
             <li>
@@ -58,4 +86,5 @@
     {% endif %}
     {% if is_granted('ROLE_USER') %}
     {% endif %}
+
 {% endblock %}

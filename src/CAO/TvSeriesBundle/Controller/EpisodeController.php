@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Episode controller.
@@ -18,18 +19,30 @@ class EpisodeController extends Controller
 {
     /**
      * Lists all episode entities.
-     *
      * @Route("/", name="admin_episode_index")
+     * @Route("/{page}", name="episode_with_paginator", requirements={"page": "\d+"})
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction($page=1)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $episodes = $em->getRepository('CAOTvSeriesBundle:Episode')->findAll();
+//        $episodes = $em->getRepository('CAOTvSeriesBundle:Episode')->findAll();
 
+        $limit = 5;
+        $offset = ($page-1) * $limit;
+        $dql ="SELECT e FROM CAOTvSeriesBundle:Episode e ORDER BY e.name ASC";
+        $query = $em->createQuery($dql)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+        ;
+
+        $paginator = new Paginator($query);
         return $this->render('CAOTvSeriesBundle:episode:index.html.twig', array(
-            'episodes' => $episodes,
+//            'episodes' => $episodes,
+            'totalPages' => (int) ceil($paginator->count() / $limit),
+            'currentPage' => $page,
+            'paginator' => $paginator,
         ));
     }
 
